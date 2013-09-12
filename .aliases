@@ -1,10 +1,13 @@
-#My sites etc
+#My sites (work)
+alias source="cd ~/source"
+
+#My sites (home)
 alias sites="cd ~/sites"
 alias hosts="sudo nano /private/etc/hosts"
 alias vhosts="sudo nano /Applications/MAMP/conf/apache/extra/httpd-vhosts.conf"
 alias apache_restart="sudo apachectl restart"
 alias reload_profile='. ~/.profile'
-alias php_log="sudo nano /Applications/MAMP/logs/php_error.log"z
+alias php_log="sudo nano /Applications/MAMP/logs/php_error.log"
 
 
 # Easier navigation: .., ..., ...., ....., ~ and -
