@@ -10,7 +10,7 @@ alias reload_profile='. ~/.profile'
 alias php_log="sudo nano /Applications/MAMP/logs/php_error.log"
 
 #Wee projects
-alias chromestyle="cd ~/Library/'Application Support'/Google/Chrome/Default"
+alias chromestyle="cd ~/Library/'Application Support'/Google/Chrome/Default/'User Stylesheets'"
 
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
