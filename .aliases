@@ -11,6 +11,7 @@ alias php_log="sudo nano /Applications/MAMP/logs/php_error.log"
 
 #Wee projects
 alias chromestyle="cd ~/Library/'Application Support'/Google/Chrome/Default/'User Stylesheets'"
+alias chromecanarystyle="cd ~/Library/'Application Support'/Google/'Chrome Canary'/Default/'User Stylesheets'"
 
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
