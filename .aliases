@@ -1,5 +1,5 @@
 #My sites (work)
-alias source="cd ~/source"
+alias src="cd ~/source"
 
 #My sites (home)
 alias sites="cd ~/sites"
