@@ -1,7 +1,8 @@
-#My sites (work)
+# My sites (work)
 alias src="cd ~/source"
+alias vm="ssh -i ~/.ssh/ps.pub 172.19.107.247"
 
-#My sites (home)
+# My sites (home)
 alias sites="cd ~/sites"
 alias hosts="sudo nano /private/etc/hosts"
 alias vhosts="sudo nano /Applications/MAMP/conf/apache/extra/httpd-vhosts.conf"
@@ -9,9 +10,12 @@ alias apache_restart="sudo apachectl restart"
 alias reload_profile='. ~/.profile'
 alias php_log="sudo nano /Applications/MAMP/logs/php_error.log"
 
-#Wee projects
+# Wee projects
 alias chromestyle="cd ~/Library/'Application Support'/Google/Chrome/Default/'User Stylesheets'"
 alias chromecanarystyle="cd ~/Library/'Application Support'/Google/'Chrome Canary'/Default/'User Stylesheets'"
+
+#Reload bootstrap stuff
+alias bootstrapsource="~/dotfiles/bootstrap.sh"
 
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."

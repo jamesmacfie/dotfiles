@@ -1,3 +1,201 @@
+## XERO GITHUB ##
+
+# VARIABLES
+GHURL=`git config lazy.url`
+GHME=`git config lazy.username`
+
+function xg() {
+  if [ $# -eq 0 ]
+  then
+    echo "You need to give Xero Github something to do"
+    return
+  fi
+
+  case "$1" in
+
+  --help) xg-help "${@:2}"
+      ;;
+  open) xg-open "${@:2}"
+      ;;
+  pr) xg-pull-request "${@:2}"
+      ;;
+  *) echo "Xero Github: '$1' is not a git command. See 'xg --help'"
+     ;;
+  esac
+}
+
+function xg-help() {
+  xg-pull-request-help
+}
+
+
+function xg-pull-request-help() {
+  if [ $# -eq 0 ]
+  then
+    echo "Short help for Xero Github pull request"
+  else
+    echo "Full help for Xero Github pull request"
+  fi
+}
+
+function xg-pull-request() {
+  if [ $# -eq 0 ]
+  then
+    #No parameters passed through. Open up the pull requests for the working directory's repo (if any).
+    #This will fail if the current folder is not a git repo
+    local isGitDir=`git rev-parse --is-inside-work-tree`
+    if [ "$isGitDir" == "true" ]
+    then
+      echo "Opening pull request in working branch"
+      #In working directory. Load up the pull request page for that.
+      local project=`git rev-parse --show-toplevel`
+      local repo=`basename "$project"`
+      local branch=`git name-rev --name-only HEAD`
+
+      open "$GHURL/Xero/$repo/compare/$branch?expand=1"
+
+      return
+    fi
+    return
+  fi
+
+  #If we only have one parameter, assume it's a repo name  (unless it's --help) and open up the pull request
+  #page for that
+  if [ $# -eq 1 ]
+  then
+    if [ "$1" == "--help" ]; then
+      xg-pull-request-help 'full'
+      return
+    fi
+    echo "Opening pull request for repo $1"
+
+    open "$GHURL/Xero/$1/pulls"
+
+    return
+  fi
+
+  #If we have three parameters, assume the first is the repo name and the second is the remote branch, and
+  #the third is the origin branch
+  if [ $# -eq 3 ]
+  then
+    echo "Opening pull request for repo $1 on branch $2"
+
+    local project=`git rev-parse --show-toplevel`
+    local repo=`basename "$project"`
+    local branch=`git name-rev --name-only HEAD`
+
+    open "$GHURL/Xero/$1/compare/Xero:$2...$GHME:$3?expand=1"
+
+    return
+  fi
+}
+
+function xg-open() {
+  echo "Xero Github open"
+}
+
+## END XERO GITHUB ##
+
+## LAZY ##
+
+if [ "$GHME" == ""  ]; then
+  printf "\033[1;36m|| Set up some stuff ... \n\E[0m"
+  git config --global lazy.url "https://github.dev.xero.com"
+  gitname=`git config user.name`
+  first=`git config user.name | cut -d \  -f 1`
+  last=`git config user.name | cut -d \  -f 2`
+
+  firstLower=$( tr '[A-Z]' '[a-z]' <<< $first)
+  lastLower=$( tr '[A-Z]' '[a-z]' <<< $last | cut -c1)
+  username=dev-$firstLower$lastLower
+
+  while true; do
+    read -p "Xero Github username is $username? (If there's nothing here, make sure you have your name specified in your .gitconfig file) " yn
+    case $yn in
+        [Yy]* ) git config --global lazy.username $username; echo "Sweet. Enter wtf for help."; break;;
+        [Nn]* ) read -p "What is it? " name; git config --global lazy.username $name; echo "Sweet. Enter wtf for help."; break;;
+        * ) echo "yes or no ...";;
+    esac
+  done
+  source ~/.bash_profile;
+fi
+
+function wtf() {
+    printf "\033[1;36m|| WTF IS LAZY? ||\n\E[0m"
+    for i in "${lazy[@]}"
+    do
+      echo `"$i" explain`
+    done
+    printf "\n\033[1;36mCreate some more and share them ... \n\E[0m"
+}
+
+function lz-x() {
+    if [ "$1" == "explain" ]; then
+      printf "\033[1;36mlz-x\n\E[0mI open $GHURL in your default browser\n\033[1;36m--> optional arguments\E[0m\n(1) repo\n\n"
+      return
+    fi
+    if [ "$#" == "0" ]; then
+      local project=""
+    else
+      local project="/Xero/"$1
+    fi
+    open "$GHURL$project"
+}
+
+function lz-me() {
+    if [ "$1" == "explain" ]; then
+      printf "\033[1;36mlz-me\n\E[0mI open $GHURL/$GHME in your default browser\n\033[1;36m--> optional arguments\E[0m\n(1) repo\n\n"
+      return
+    fi
+    if [ "$#" == "0" ]; then
+      local project=""
+    else
+      local project="/"$1
+    fi
+    open "$GHURL/$GHME$project"
+}
+
+function lz-pr() {
+    if [ "$1" == "explain" ]; then
+      printf "\033[1;36mlz-pr\n\E[0mI open a new pull request in your default browser against your current repo and branch\n\033[1;36m--> optional arguments\E[0m\n(1) repo\n(2) branch\n"
+      return
+    fi
+
+    local isGitDir=`git rev-parse --is-inside-work-tree`
+    if [ "$isGitDir" != "true" ] && [ "$#" != 2 ]; then
+      return
+    fi
+    local repo=$1
+    local branch=$2
+    local project=`git rev-parse --show-toplevel`
+
+    if [ "$#" == "1" ]; then
+      local branch=`git name-rev --name-only HEAD`
+    fi
+    if [ "$#" == "0" ]; then
+      local repo=`basename "$project"`
+      local branch=`git name-rev --name-only HEAD`
+    fi
+    open "$GHURL/$GHME/$repo/compare/$branch?expand=1"
+}
+
+## END LAZY ##
+
+# Open chrome in a certain URL
+function chr() {
+	/usr/bin/open -a "/Applications/Google Chrome.app" "http://$1"
+}
+
+#Connect to a branch envrionment
+function b() {
+	if [ $# -eq 0 ]
+  then
+    echo "You need to specify the branch environment"
+    return
+	fi
+	/usr/bin/open -a "/Applications/Google Chrome.app" "https://go.branch$1.test.xero.com/"
+}
+
 # Simple calculator
 function calc() {
 	local result=""
