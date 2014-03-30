@@ -1,6 +1,6 @@
 # My sites (work)
 alias src="cd ~/source"
-alias vm="ssh -i ~/.ssh/ps.pub 172.19.107.247"
+alias vm="ssh -i ~/.ssh/ps.pub 10.211.55.4"
 
 # My sites (home)
 alias sites="cd ~/sites"
