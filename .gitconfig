@@ -79,3 +79,7 @@
 [user]
 	email = james@macfie.co.nz
 	name = James Macfie
+
+[xero]
+	url = "https://github.dev.xero.com"
+	username = "dev-jamesm"

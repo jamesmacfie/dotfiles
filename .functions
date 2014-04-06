@@ -9,8 +9,8 @@ function nls() {
 ## XERO GITHUB ##
 
 # VARIABLES
-GHURL=`git config lazy.url`
-GHME=`git config lazy.username`
+GHURL=`git config xero.url`
+GHME=`git config xero.username`
 
 function xg() {
   if [ $# -eq 0 ]
