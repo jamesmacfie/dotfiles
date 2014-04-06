@@ -1,3 +1,6 @@
+#todo.txt
+alias t='todo.sh -d ~/todo.cfg'
+
 #My sites (work)
 alias src="cd ~/source"
 
