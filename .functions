@@ -1,3 +1,133 @@
+#Take notes
+function n() {
+        $EDITOR ~/Dropbox/Notes/"$*".txt
+}
+function nls() {
+        ls -c ~/Dropbox/Notes/ | grep "$*"
+}
+
+## XERO GITHUB ##
+
+# VARIABLES
+GHURL=`git config lazy.url`
+GHME=`git config lazy.username`
+
+function xg() {
+  if [ $# -eq 0 ]
+  then
+    echo "You need to give Xero Github something to do"
+    return
+  fi
+
+  case "$1" in
+
+  --help) xg-help "${@:2}"
+      ;;
+  open) xg-open "${@:2}"
+      ;;
+  pr) xg-pull-request "${@:2}"
+      ;;
+  *) echo "Xero Github: '$1' is not a git command. See 'xg --help'"
+     ;;
+  esac
+}
+
+function xg-help() {
+  xg-pull-request-help
+}
+
+
+function xg-pull-request-help() {
+  if [ $# -eq 0 ]
+  then
+    echo "Short help for Xero Github pull request"
+  else
+    echo "Full help for Xero Github pull request"
+  fi
+}
+
+function xg-pull-request() {
+  if [ $# -eq 0 ]
+  then
+    #No parameters passed through. Open up the pull requests for the working directory's repo (if any).
+    #This will fail if the current folder is not a git repo
+    local isGitDir=`git rev-parse --is-inside-work-tree`
+    if [ "$isGitDir" == "true" ]
+    then
+      echo "Opening pull request in working branch"
+      #In working directory. Load up the pull request page for that.
+      local project=`git rev-parse --show-toplevel`
+      local repo=`basename "$project"`
+      local branch=`git name-rev --name-only HEAD`
+
+      open "$GHURL/Xero/$repo/compare/$branch?expand=1"
+
+      return
+    fi
+    return
+  fi
+
+  #If we only have one parameter, assume it's a repo name  (unless it's --help) and open up the pull request
+  #page for that
+  if [ $# -eq 1 ]
+  then
+    if [ "$1" == "--help" ]; then
+      xg-pull-request-help 'full'
+      return
+    fi
+    echo "Opening pull request for repo $1"
+
+    open "$GHURL/Xero/$1/pulls"
+
+    return
+  fi
+
+  #If we have three parameters, assume the first is the repo name and the second is the remote branch, and
+  #the third is the origin branch
+  if [ $# -eq 3 ]
+  then
+    echo "Opening pull request for repo $1 on branch $2"
+
+    local project=`git rev-parse --show-toplevel`
+    local repo=`basename "$project"`
+    local branch=`git name-rev --name-only HEAD`
+
+    open "$GHURL/Xero/$1/compare/Xero:$2...$GHME:$3?expand=1"
+
+    return
+  fi
+}
+
+function xg-open() {
+  echo "Xero Github open"
+}
+
+## END XERO GITHUB ##
+
+## NOTE TAKING ##
+n() {
+  $EDITOR ~/notes/"$*".txt
+}
+
+nls() {
+  ls -c ~/notes/ | grep "$*"
+}
+
+# Open chrome in a certain URL
+function chr() {
+	/usr/bin/open -a "/Applications/Google Chrome.app" "http://$1"
+}
+
+#Connect to a branch envrionment
+function b() {
+	if [ $# -eq 0 ]
+  then
+    echo "You need to specify the branch environment"
+    return
+	fi
+	/usr/bin/open -a "/Applications/Google Chrome.app" "https://go.branch$1.test.xero.com/"
+}
+
 # Simple calculator
 function calc() {
 	local result=""

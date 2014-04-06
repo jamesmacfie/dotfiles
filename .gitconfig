@@ -76,3 +76,6 @@
 
 [push]
 	default = matching
+[user]
+	email = james@macfie.co.nz
+	name = James Macfie
