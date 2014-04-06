@@ -104,15 +104,6 @@ function xg-open() {
 
 ## END XERO GITHUB ##
 
-## NOTE TAKING ##
-n() {
-  $EDITOR ~/notes/"$*".txt
-}
-
-nls() {
-  ls -c ~/notes/ | grep "$*"
-}
-
 # Open chrome in a certain URL
 function chr() {
 	/usr/bin/open -a "/Applications/Google Chrome.app" "http://$1"
