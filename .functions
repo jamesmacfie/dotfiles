@@ -12,7 +12,7 @@ function nls() {
 GHURL=`git config xero.url`
 GHME=`git config xero.username`
 
-function xg() {
+function x() {
   if [ $# -eq 0 ]
   then
     echo "You need to give Xero Github something to do"
@@ -21,19 +21,19 @@ function xg() {
 
   case "$1" in
 
-  --help) xg-help "${@:2}"
+  --help) x-help "${@:2}"
       ;;
-  open) xg-open "${@:2}"
+  o) x-open "${@:2}"
       ;;
-  pr) xg-pull-request "${@:2}"
+  p) x-pull-request "${@:2}"
       ;;
   *) echo "Xero Github: '$1' is not a git command. See 'xg --help'"
      ;;
   esac
 }
 
-function xg-help() {
-  xg-pull-request-help
+function x-help() {
+  x-pull-request-help
 }
 
 
@@ -46,7 +46,7 @@ function xg-pull-request-help() {
   fi
 }
 
-function xg-pull-request() {
+function x-pull-request() {
   if [ $# -eq 0 ]
   then
     #No parameters passed through. Open up the pull requests for the working directory's repo (if any).
@@ -72,7 +72,7 @@ function xg-pull-request() {
   if [ $# -eq 1 ]
   then
     if [ "$1" == "--help" ]; then
-      xg-pull-request-help 'full'
+      x-pull-request-help 'full'
       return
     fi
     echo "Opening pull request for repo $1"
@@ -98,7 +98,7 @@ function xg-pull-request() {
   fi
 }
 
-function xg-open() {
+function x-open() {
   echo "Xero Github open"
 }
 
