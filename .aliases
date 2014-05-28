@@ -4,11 +4,11 @@ alias vm="ssh -i ~/.ssh/ps.pub 10.211.55.4"
 
 # My sites (home)
 alias sites="cd ~/sites"
-alias hosts="sudo nano /private/etc/hosts"
-alias vhosts="sudo nano /Applications/MAMP/conf/apache/extra/httpd-vhosts.conf"
+alias hosts="sudo vim /private/etc/hosts"
+alias vhosts="sudo vim /Applications/MAMP/conf/apache/extra/httpd-vhosts.conf"
 alias apache_restart="sudo apachectl restart"
 alias reload_profile='. ~/.profile'
-alias php_log="sudo nano /Applications/MAMP/logs/php_error.log"
+alias php_log="sudo vim /Applications/MAMP/logs/php_error.log"
 
 # Wee projects
 alias chromestyle="cd ~/Library/'Application Support'/Google/Chrome/Default/'User Stylesheets'"

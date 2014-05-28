@@ -1,3 +1,5 @@
+export JAVA_HOME=$(/usr/libexec/java_home)
+
 # Add `~/bin` to the `$PATH`
 export PATH="$HOME/bin:$PATH"
 
