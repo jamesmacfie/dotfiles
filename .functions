@@ -1,9 +1,21 @@
 #Take notes
 function n() {
-        $EDITOR ~/Dropbox/Notes/"$*".txt
+				$EDITOR ~/Dropbox/Notes/"$*".txt
 }
 function nls() {
-        ls -c ~/Dropbox/Notes/ | grep "$*"
+				ls -c ~/Dropbox/Notes/ | grep "$*"
+}
+
+## XERO TEAMCITY ##
+
+function t() {
+	if [ $# -eq 0 ]
+	then
+		open "https://teamcity.dev.xero.com"
+		return
+	fi
+
+	open "https://teamcity.dev.xero.com/project.html?projectId=$1&tab=projectOverview"
 }
 
 ## XERO GITHUB ##
@@ -13,93 +25,162 @@ GHURL=`git config xero.url`
 GHME=`git config xero.username`
 
 function x() {
-  if [ $# -eq 0 ]
-  then
-    echo "You need to give Xero Github something to do"
-    return
-  fi
+	if [ $# -eq 0 ]
+	then
+		echo "You need to give Xero Github something to do"
+		return
+	fi
 
-  case "$1" in
+	case "$1" in
 
-  --help) x-help "${@:2}"
-      ;;
-  o) x-open "${@:2}"
-      ;;
-  p) x-pull-request "${@:2}"
-      ;;
-  *) echo "Xero Github: '$1' is not a git command. See 'xg --help'"
-     ;;
-  esac
+	--help) x-help "${@:2}"
+			;;
+	n) x-stash-new "${@:2}"
+			;;
+	o) x-open "${@:2}"
+			;;
+	p) x-pull-request "${@:2}"
+			;;
+	cp) x-commit-push "${@:2}"
+			;;
+	y) x-commit-push-pull-request "${@:2}"
+			;;
+	rm) x-delete-branch "${@:2}"
+			;;
+	*) echo "Xero Github: '$1' is not a git command. See 'xg --help'"
+		 ;;
+	esac
 }
 
 function x-help() {
-  x-pull-request-help
+	x-pull-request-help
 }
 
 
 function xg-pull-request-help() {
-  if [ $# -eq 0 ]
-  then
-    echo "Short help for Xero Github pull request"
-  else
-    echo "Full help for Xero Github pull request"
-  fi
+	if [ $# -eq 0 ]
+	then
+		echo "Short help for Xero Github pull request"
+	else
+		echo "Full help for Xero Github pull request"
+	fi
+}
+
+function x-commit-push() {
+	if [ $# -eq 0 ]
+		then
+			echo "You need to enter a commit message"
+		return
+	fi
+
+	local branch=`git name-rev --name-only HEAD`
+
+	echo "Commiting code and pushing to origin"
+	git commit -am "$1"
+	git push origin $branch
+}
+
+function x-stash-new() {
+	if [ $# -lt 2 ]
+		then
+			echo "You need to enter a branch to branch off and a new branch name (else you might as well just use git checkout -b <branchName>)"
+		return
+	fi
+
+	git stash
+	git checkout $1
+	git checkout -b $2
+	git stash pop
+}
+
+function x-commit-push-pull-request() {
+	if [ $# -eq 0 ]
+		then
+			echo "You need to enter a commit message"
+		return
+	fi
+
+	if [ $# -eq 1 ]
+		then
+			echo "You need to enter a commit message and the remote branch for the pul request"
+		return
+	fi
+
+	local project=`git rev-parse --show-toplevel`
+	local repo=`basename "$project"`
+	local branch=`git name-rev --name-only HEAD`
+
+	echo "Commiting code, pushing to origin, and opening a pull request"
+	git commit -am "$1"
+	git push origin $branch
+	open "$GHURL/Xero/$repo/compare/Xero:$2...$GHME:$branch?expand=1"
 }
 
 function x-pull-request() {
-  if [ $# -eq 0 ]
-  then
-    #No parameters passed through. Open up the pull requests for the working directory's repo (if any).
-    #This will fail if the current folder is not a git repo
-    local isGitDir=`git rev-parse --is-inside-work-tree`
-    if [ "$isGitDir" == "true" ]
-    then
-      echo "Opening pull request in working branch"
-      #In working directory. Load up the pull request page for that.
-      local project=`git rev-parse --show-toplevel`
-      local repo=`basename "$project"`
-      local branch=`git name-rev --name-only HEAD`
+	if [ $# -eq 0 ]
+	then
+		#No parameters passed through. Open up the pull requests for the working directory's repo (if any).
+		#This will fail if the current folder is not a git repo
+		local isGitDir=`git rev-parse --is-inside-work-tree`
+		if [ "$isGitDir" == "true" ]
+		then
+			echo "Opening pull request in working branch"
+			#In working directory. Load up the pull request page for that.
+			local project=`git rev-parse --show-toplevel`
+			local repo=`basename "$project"`
+			local branch=`git name-rev --name-only HEAD`
 
-      open "$GHURL/Xero/$repo/compare/$branch?expand=1"
+			open "$GHURL/Xero/$repo/compare/$branch?expand=1"
 
-      return
-    fi
-    return
-  fi
+			return
+		fi
+		return
+	fi
 
-  #If we only have one parameter, assume it's a repo name  (unless it's --help) and open up the pull request
-  #page for that
-  if [ $# -eq 1 ]
-  then
-    if [ "$1" == "--help" ]; then
-      x-pull-request-help 'full'
-      return
-    fi
-    echo "Opening pull request for repo $1"
+	#If we only have one parameter, assume it's a repo name  (unless it's --help) and open up the pull request
+	#page for that
+	if [ $# -eq 1 ]
+	then
+		if [ "$1" == "--help" ]; then
+			x-pull-request-help 'full'
+			return
+		fi
+		echo "Opening pull request for repo $1"
 
-    open "$GHURL/Xero/$1/pulls"
+		open "$GHURL/Xero/$1/pulls"
 
-    return
-  fi
+		return
+	fi
 
-  #If we have three parameters, assume the first is the repo name and the second is the remote branch, and
-  #the third is the origin branch
-  if [ $# -eq 3 ]
-  then
-    echo "Opening pull request for repo $1 on branch $2"
+	#If we have three parameters, assume the first is the repo name and the second is the remote branch, and
+	#the third is the origin branch
+	if [ $# -eq 3 ]
+	then
+		echo "Opening pull request for repo $1 on branch $2"
 
-    local project=`git rev-parse --show-toplevel`
-    local repo=`basename "$project"`
-    local branch=`git name-rev --name-only HEAD`
+		local project=`git rev-parse --show-toplevel`
+		local repo=`basename "$project"`
+		local branch=`git name-rev --name-only HEAD`
 
-    open "$GHURL/Xero/$1/compare/Xero:$2...$GHME:$3?expand=1"
+		open "$GHURL/Xero/$1/compare/Xero:$2...$GHME:$3?expand=1"
 
-    return
-  fi
+		return
+	fi
 }
 
 function x-open() {
-  echo "Xero Github open"
+	echo "TODO Xero Github open"
+}
+
+function x-delete-branch() {
+		if [ $# -eq 0 ]
+			then
+				echo "You need to enter which local branch you want to delete"
+			return
+		fi
+
+		git branch -D "$1"
+
 }
 
 ## END XERO GITHUB ##
@@ -112,9 +193,9 @@ function chr() {
 #Connect to a branch envrionment
 function b() {
 	if [ $# -eq 0 ]
-  then
-    echo "You need to specify the branch environment"
-    return
+	then
+		echo "You need to specify the branch environment"
+		return
 	fi
 	/usr/bin/open -a "/Applications/Google Chrome.app" "https://go.branch$1.test.xero.com/"
 }
