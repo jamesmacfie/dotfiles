@@ -55,31 +55,51 @@ function x() {
 }
 
 function x-help() {
-	x-pull-request-help
-}
+	if [ $# -eq 0 ]
+		then
+			echo "Usage: x [command]"
+			echo ""
+			echo "These Xero github functions provide a helper layer between Xero's github enterprise"
+			echo "and the command line. They also provide some helper functionality that abstracts away"
+			echo "some of the git commands so you dont have to type as much."
+			echo ""
+			echo "The commands are:"
+			echo -e "\to\tOpens up the Xero github page for the repo in the directory you are in"
+			echo -e "\tn\tStashes any changes you have made to the current branch and creates a new"
+			echo -e "\t\ttbranch off of the branch specified in the arguments"
+			echo -e "\tp\tOpens up the pull request page with the correct dropdowns filled in based"
+			echo -e "\t\toff the specified repo and branhes"
+			echo -e "\tpr\tAlias for [-p]"
+			echo -e "\tcp\tCommits the current code with the supplied message and pushes the changes"
+			echo -e "\t\tto origin"
+			echo -e "\ty\tCommits the current code with the supplied message, pushes the changes to"
+			echo -e "\t\torigin and opens up the pull request page with the correct dropdowns filled"
+			echo -e "\t\tin"
 
+			echo "For further help type x --help [command]"
+		return
+	fi
 
-function x-pull-request-help() {
-	echo "Usage: x [command]"
-	echo ""
-	echo "These Xero github functions provide a helper layer between Xero's github enterprise"
-	echo "and the command line. They also provide some helper functionality that abstracts away"
-	echo "some of the git commands so you dont have to type as much."
-	echo ""
-	echo "The commands are:"
-	echo -e "\to\tOpens up the Xero github page for the repo in the directory you are in"
-	echo -e "\tn\tStashes any changes you have made to the current branch and creates a new"
-	echo -e "\t\ttbranch off of the branch specified in the arguments"
-	echo -e "\tp\tOpens up the pull request page with the correct dropdowns filled in based"
-	echo -e "\t\toff the specified repo and branhes"
-	echo -e "\tpr\tAlias for [-p]"
-	echo -e "\tcp\tCommits the current code with the supplied message and pushes the changes"
-	echo -e "\t\tto origin"
-	echo -e "\ty\tCommits the current code with the supplied message, pushes the changes to"
-	echo -e "\t\torigin and opens up the pull request page with the correct dropdowns filled"
-	echo -e "\t\tin"
-
-	echo "For further help type x --help [command]"
+	if [ $# -eq 1 ]
+		then
+			case "$1" in
+				o) echo "help for o"
+						;;
+				n) echo "help for n"
+						;;
+				p) echo "help for p"
+						;;
+				pr) echo "help for p"
+						;;
+				cp) echo "help for cp"
+						;;
+				y) echo "help for y"
+						;;
+				rm) echo "help for rm"
+						;;
+			esac
+		return
+	fi
 }
 
 function x-commit-push() {
