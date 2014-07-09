@@ -35,11 +35,13 @@ function x() {
 
 	--help) x-help "${@:2}"
 			;;
-	n) x-stash-new "${@:2}"
-			;;
 	o) x-open "${@:2}"
 			;;
+	n) x-stash-new "${@:2}"
+			;;
 	p) x-pull-request "${@:2}"
+			;;
+	pr) x-pull-request "${@:2}"
 			;;
 	cp) x-commit-push "${@:2}"
 			;;
@@ -57,13 +59,27 @@ function x-help() {
 }
 
 
-function xg-pull-request-help() {
-	if [ $# -eq 0 ]
-	then
-		echo "Short help for Xero Github pull request"
-	else
-		echo "Full help for Xero Github pull request"
-	fi
+function x-pull-request-help() {
+	echo "Usage: x [command]"
+	echo ""
+	echo "These Xero github functions provide a helper layer between Xero's github enterprise"
+	echo "and the command line. They also provide some helper functionality that abstracts away"
+	echo "some of the git commands so you dont have to type as much."
+	echo ""
+	echo "The commands are:"
+	echo -e "\to\tOpens up the Xero github page for the repo in the directory you are in"
+	echo -e "\tn\tStashes any changes you have made to the current branch and creates a new"
+	echo -e "\t\ttbranch off of the branch specified in the arguments"
+	echo -e "\tp\tOpens up the pull request page with the correct dropdowns filled in based"
+	echo -e "\t\toff the specified repo and branhes"
+	echo -e "\tpr\tAlias for [-p]"
+	echo -e "\tcp\tCommits the current code with the supplied message and pushes the changes"
+	echo -e "\t\tto origin"
+	echo -e "\ty\tCommits the current code with the supplied message, pushes the changes to"
+	echo -e "\t\torigin and opens up the pull request page with the correct dropdowns filled"
+	echo -e "\t\tin"
+
+	echo "For further help type x --help [command]"
 }
 
 function x-commit-push() {
@@ -169,17 +185,21 @@ function x-pull-request() {
 }
 
 function x-open() {
-	echo "TODO Xero Github open"
+	local project=`git rev-parse --show-toplevel`
+	local repo=`basename "$project"`
+
+	echo "Opening up the repository $repo"
+	open "$GHURL/Xero/$repo"
 }
 
 function x-delete-branch() {
 		if [ $# -eq 0 ]
 			then
-				echo "You need to enter which local branch you want to delete"
+				echo "You need to enter which branch you want to delete"
 			return
 		fi
 
-		git branch -D "$1"
+		git push origin --delete "$1"
 
 }
 
