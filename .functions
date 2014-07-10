@@ -55,47 +55,135 @@ function x() {
 }
 
 function x-help() {
+	green='\x1B[0;32m' 	#Green text
+	red='\x1B[1;31m'		#Light red text
+	cyan='\x1B[0;36m'	#Cyan text
+	purple='\x1B[1;35m'	#Purple text
+	orange='\x1B[0;33m'	#Orange text
+	nc='\x1B[0m'				#No colour text
+
 	if [ $# -eq 0 ]
 		then
-			echo "Usage: x [command]"
 			echo ""
-			echo "These Xero github functions provide a helper layer between Xero's github enterprise"
-			echo "and the command line. They also provide some helper functionality that abstracts away"
-			echo "some of the git commands so you dont have to type as much."
+			echo -e "${orange}USAGE${nc}"
+			echo -e "\t${red}x ${green}[command]${nc}"
 			echo ""
-			echo "The commands are:"
-			echo -e "\to\tOpens up the Xero github page for the repo in the directory you are in"
-			echo -e "\tn\tStashes any changes you have made to the current branch and creates a new"
+			echo -e "${orange}DESCRIPTION${nc}"
+			echo -e "\tThese Xero github functions provide a helper layer between Xero's github enterprise"
+			echo -e "\tand the command line. They also provide some helper functionality that abstracts away"
+			echo -e "\tsome of the git commands so you dont have to type as much."
+			echo ""
+			echo -e "${orange}COMMANDS${nc}"
+			echo -e "\t${green}o${nc}\tOpens up the Xero github page for the repo in the directory you are in"
+			echo -e "\t${green}n${nc}\tStashes any changes you have made to the current branch and creates a new"
 			echo -e "\t\ttbranch off of the branch specified in the arguments"
-			echo -e "\tp\tOpens up the pull request page with the correct dropdowns filled in based"
+			echo -e "\t${green}p${nc}\tOpens up the pull request page with the correct dropdowns filled in based"
 			echo -e "\t\toff the specified repo and branhes"
-			echo -e "\tpr\tAlias for [-p]"
-			echo -e "\tcp\tCommits the current code with the supplied message and pushes the changes"
+			echo -e "\t${green}pr${nc}\tAlias for [-p]"
+			echo -e "\t${green}cp${nc}\tCommits the current code with the supplied message and pushes the changes"
 			echo -e "\t\tto origin"
-			echo -e "\ty\tCommits the current code with the supplied message, pushes the changes to"
+			echo -e "\t${green}y${nc}\tCommits the current code with the supplied message, pushes the changes to"
 			echo -e "\t\torigin and opens up the pull request page with the correct dropdowns filled"
+			echo -e "\t${green}rm${nc}\tRemoves a branch (both locally and on origin)"
 			echo -e "\t\tin"
 
-			echo "For further help type x --help [command]"
+			echo -e "For further help type ${red}x --help ${green}[command]${nc}"
+			echo ""
 		return
 	fi
 
 	if [ $# -eq 1 ]
 		then
 			case "$1" in
-				o) echo "help for o"
+				o)	echo ""
+						echo -e "${orange}USAGE${nx}"
+						echo -e "\t${red}x ${cyan}o ${green}[repoName]${nc}"
+						echo ""
+						echo -e "${orange}DESCRIPTION${nc}"
+						echo -e "\tOpens up the repository Xero Github page in your browser"
+						echo ""
+						echo -e "${orange}EXAMPLE${nc}"
+						echo -e "\t${red}x ${cyan}o ${green}xero${nc}"
+						echo ""
 						;;
-				n) echo "help for n"
+				n)	echo ""
+						echo -e "${orange}USAGE${nc}"
+						echo -e "\t${red}x ${cyan}n ${green}[branchOffName] [newBranchName]${nc}"
+						echo ""
+						echo -e "${orange}DESCRIPTION${nc}"
+						echo -e "\tStashes any changes you have made and checks out the branch specified in the"
+						echo -e "\tfirst argument. Once that branch has been checked out, it then creates a new"
+						echo -e "\tbranch with the name of the second argument."
+						echo ""
+						echo -e "${orange}EXAMPLE${nc}"
+						echo -e "\t${red}x ${cyan}n ${green}develop newBranch${nc}"
+						echo ""
 						;;
-				p) echo "help for p"
+				p)	echo ""
+						echo -e "${orange}USAGE${nc}"
+						echo -e "\t${red}x ${cyan}p${nc}"
+						echo -e "\t${red}x ${cyan}p ${green}[repoName]${nc}"
+						echo -e "\t${red}x ${cyan}p ${green}[branchToMergeTo] [branchToMergeFrom]${nc}"
+						echo -e "\t${red}x ${cyan}p ${green}[repoName] [branchToMergeTo] [branchToMergeFrom]${nc}"
+						echo ""
+						echo -e "${orange}DESCRIPTION${nc}"
+						echo -e "\tOpens Xero Github in your browser with all the correct info entered into the"
+						echo -e "\tto / from dropdowns (because they are a right pain in the ass to fill in). If you"
+						echo -e "\tenter any branch names incorrectly, github (or this script) isn't smart enough"
+						echo -e "\tto know that you did a typo and will show you a diff between branches that don't"
+						echo -e "\tactually exist."
+						echo ""
+						echo -e "\tIf no parameters are given and the current folder is a working git repo then"
+						echo -e "\tthis will open up the pull request page in the browser."
+						echo ""
+						echo -e "\tIf one parameter is given then it is assumed that is the name of the repo you"
+						echo -e "\twant to view the pull requests for. That repos pull requests will be opened in"
+						echo -e "\tyour browser"
+						echo ""
+						echo -e "\tIf two parameters are given and the current folder is a working git repo then"
+						echo -e "\tit will open up a pull request for the current repo."
+						echo ""
+						echo -e "${orange}EXAMPLE${nc}"
+						echo -e "\t${red}x ${cyan}p${nc}"
+						echo -e "\t${red}x ${cyan}p ${green}content${nc}${nc}"
+						echo -e "\t${red}x ${cyan}p ${green}develop newBranch${nc}${nc}"
+						echo -e "\t${red}x ${cyan}p ${green}content develop newBranch${nc}"
+						echo ""
 						;;
-				pr) echo "help for p"
+				pr) echo ""
+						echo "Alias for ${cyan}p${nc}"
+						echo ""
 						;;
-				cp) echo "help for cp"
+				cp) echo ""
+						echo -e "${orange}USAGE${nc}"
+						echo -e "\t${red}x ${cyan}cp ${green}\"message\"${nc}"
+						echo ""
+						echo -e "${orange}DESCRIPTION${nc}"
+						echo -e "\tCommits any code changes with the supplied message and then pushes those up to"
+						echo -e "\tyour origin. Essentially just the same as doing 'git commit -am \"message\" &&"
+						echo -e "\tgit push origin [branch]' (where [branch] is the branch you currently have"
+						echo -e "\tchecked out)"
+						echo ""
+						echo -e "${orange}EXAMPLES${nc}"
+						echo -e "\t${red}x ${cyan}cp ${green}\"Here is my commit message\"${nc}"
+						echo ""
 						;;
-				y) echo "help for y"
+				y) 	echo ""
+						echo -e "${orange}USAGE${nc}"
+						echo -e "\t${red}x ${cyan}y ${green}\"message\" [branchName]${nc}"
+						echo ""
+						echo -e "\tCommits any code changes with the supplied message and then pushes those up to"
+						echo -e "\tyour origin. Once the code is on your origin then it opens up Xero Github in"
+						echo -e "\tyour browser on the pull request page with all the dropdowns filled in correctly."
+						echo -e "\tEssentially the same as using 'x cp' and 'x p' with the correct parameters."
+						echo ""
+						echo -e "${orange}EXAMPLES${nc}"
+						echo -e "\t${red}x ${cyan}y ${green}\"Here is my commit message\" develop${nc}"
+						echo ""
 						;;
-				rm) echo "help for rm"
+				rm) echo ""
+						echo "help for rm"
+						echo ""
 						;;
 			esac
 		return
@@ -111,7 +199,6 @@ function x-commit-push() {
 
 	local branch=`git name-rev --name-only HEAD`
 
-	echo "Commiting code and pushing to origin"
 	git commit -am "$1"
 	git push origin $branch
 }
@@ -138,7 +225,7 @@ function x-commit-push-pull-request() {
 
 	if [ $# -eq 1 ]
 		then
-			echo "You need to enter a commit message and the remote branch for the pul request"
+			echo "You need to enter a commit message and the remote branch for the pull request"
 		return
 	fi
 
@@ -146,7 +233,6 @@ function x-commit-push-pull-request() {
 	local repo=`basename "$project"`
 	local branch=`git name-rev --name-only HEAD`
 
-	echo "Commiting code, pushing to origin, and opening a pull request"
 	git commit -am "$1"
 	git push origin $branch
 	open "$GHURL/Xero/$repo/compare/Xero:$2...$GHME:$branch?expand=1"
@@ -160,46 +246,33 @@ function x-pull-request() {
 		local isGitDir=`git rev-parse --is-inside-work-tree`
 		if [ "$isGitDir" == "true" ]
 		then
-			echo "Opening pull request in working branch"
-			#In working directory. Load up the pull request page for that.
 			local project=`git rev-parse --show-toplevel`
 			local repo=`basename "$project"`
-			local branch=`git name-rev --name-only HEAD`
 
-			open "$GHURL/Xero/$repo/compare/$branch?expand=1"
-
+			open "$GHURL/Xero/$repo/pulls"
 			return
 		fi
 		return
 	fi
 
-	#If we only have one parameter, assume it's a repo name  (unless it's --help) and open up the pull request
-	#page for that
 	if [ $# -eq 1 ]
 	then
-		if [ "$1" == "--help" ]; then
-			x-pull-request-help 'full'
-			return
-		fi
-		echo "Opening pull request for repo $1"
-
 		open "$GHURL/Xero/$1/pulls"
-
 		return
 	fi
 
-	#If we have three parameters, assume the first is the repo name and the second is the remote branch, and
-	#the third is the origin branch
-	if [ $# -eq 3 ]
+	if [ $# -eq 2 ]
 	then
-		echo "Opening pull request for repo $1 on branch $2"
-
 		local project=`git rev-parse --show-toplevel`
 		local repo=`basename "$project"`
-		local branch=`git name-rev --name-only HEAD`
 
+		open "$GHURL/Xero/$repo/compare/Xero:$1...$GHME:$2?expand=1"
+		return
+	fi
+
+	if [ $# -eq 3 ]
+	then
 		open "$GHURL/Xero/$1/compare/Xero:$2...$GHME:$3?expand=1"
-
 		return
 	fi
 }
@@ -208,7 +281,6 @@ function x-open() {
 	local project=`git rev-parse --show-toplevel`
 	local repo=`basename "$project"`
 
-	echo "Opening up the repository $repo"
 	open "$GHURL/Xero/$repo"
 }
 
