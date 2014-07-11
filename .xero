@@ -28,7 +28,7 @@ nc='\x1B[0m'				#No colour text
 function x() {
   if [ $# -eq 0 ]
   then
-    echo "You need to give Xero Github something to do"
+    echo -e "\n${red}You need to give Xero Github something to do${nc}\n"
     return
   fi
 
@@ -50,7 +50,7 @@ function x() {
       ;;
   rm) x-delete-branch "${@:2}"
       ;;
-  *) echo -e "Xero Github: '${cyan}$1${nc}' is not a git command. See '${green}xg --help${nc}'"
+  *) echo -e "\nXero Github: '${cyan}$1${nc}' is not a git command. See '${green}xg --help${nc}'\n"
      ;;
   esac
 }
@@ -58,7 +58,7 @@ function x() {
 function x-commit-push() {
   if [ $# -eq 0 ]
     then
-      echo "You need to enter a commit message"
+      echo -e "\n${red}You need to enter a commit message${nc}\n"
     return
   fi
 
@@ -71,7 +71,7 @@ function x-commit-push() {
 function x-stash-new() {
   if [ $# -lt 2 ]
     then
-      echo -e "${red}You need to enter a branch to branch off and a new branch name${nc}"
+      echo -e "\n${red}You need to enter a branch to branch off and a new branch name${nc}\n"
     return
   fi
 
@@ -84,13 +84,13 @@ function x-stash-new() {
 function x-commit-push-pull-request() {
   if [ $# -eq 0 ]
     then
-      echo -e "${red}You need to enter a commit message${nc}"
+      echo -e "\n${red}You need to enter a commit message${nc}\n"
     return
   fi
 
   if [ $# -eq 1 ]
     then
-      echo -e "${red}You need to enter a commit message and the remote branch for the pull request${nc}"
+      echo -e "\n${red}You need to enter a commit message and the remote branch for the pull request${nc}\n"
     return
   fi
 
@@ -152,7 +152,7 @@ function x-open() {
 function x-delete-branch() {
     if [ $# -eq 0 ]
       then
-        echo -e "${red}You need to enter which branch you want to delete${nc}"
+        echo -e "\n${red}You need to enter which branch you want to delete${nc}\n"
       return
     fi
 
@@ -284,7 +284,14 @@ function x-help() {
             echo ""
             ;;
         rm) echo ""
-            echo "help for rm"
+            echo -e "${orange}USAGE${nc}"
+            echo -e "\t${red}x ${cyan}rm ${green}[branchName]${nc}"
+            echo ""
+            echo -e "${orange}DESCRIPTION${nc}"
+            echo -e "\tRemoves the given branch both locally and on origin"
+            echo ""
+            echo -e "${orange}EXAMPLE${nc}"
+            echo -e "\t${red}x ${cyan}rm ${green}branchName${nc}"
             echo ""
             ;;
       esac
@@ -303,7 +310,7 @@ function x-help() {
 function b() {
   if [ $# -eq 0 ]
   then
-    echo -e "${red}You need to specify the branch environment${nc}"
+    echo -e "\n${red}You need to specify the branch environment${nc}\n"
     return
   fi
   /usr/bin/open -a "/Applications/Google Chrome.app" "https://go.branch$1.test.xero.com/"
