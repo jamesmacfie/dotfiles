@@ -25,6 +25,7 @@ purple='\x1B[1;35m'	#Purple text
 orange='\x1B[0;33m'	#Orange text
 nc='\x1B[0m'				#No colour text
 
+# Base x
 function x() {
   if [ $# -eq 0 ]
   then
@@ -33,27 +34,27 @@ function x() {
   fi
 
   case "$1" in
-
-  --help) x-help "${@:2}"
-      ;;
-  o) x-open "${@:2}"
-      ;;
-  n) x-stash-new "${@:2}"
-      ;;
-  p) x-pull-request "${@:2}"
-      ;;
-  pr) x-pull-request "${@:2}"
-      ;;
-  cp) x-commit-push "${@:2}"
-      ;;
-  y) x-commit-push-pull-request "${@:2}"
-      ;;
-  rm) x-delete-branch "${@:2}"
-      ;;
-  *) echo -e "\nXero Github: '${cyan}$1${nc}' is not a git command. See '${green}xg --help${nc}'\n"
-     ;;
+    --help) x-help "${@:2}"
+        ;;
+    o) x-open "${@:2}"
+        ;;
+    n) x-stash-new "${@:2}"
+        ;;
+    p) x-pull-request "${@:2}"
+        ;;
+    pr) x-pull-request "${@:2}"
+        ;;
+    cp) x-commit-push "${@:2}"
+        ;;
+    y) x-commit-push-pull-request "${@:2}"
+        ;;
+    rm) x-delete-branch "${@:2}"
+        ;;
+    *) echo -e "\nXero Github: '${cyan}$1${nc}' is not a git command. See '${green}xg --help${nc}'\n"
+       ;;
   esac
 }
+
 
 function x-commit-push() {
   if [ $# -eq 0 ]
@@ -68,6 +69,8 @@ function x-commit-push() {
   git push origin $branch
 }
 
+# Stashes any changes you have made to the current branch and creates a new
+# branch off of the branch specified in the arguments
 function x-stash-new() {
   if [ $# -lt 2 ]
     then
@@ -103,6 +106,8 @@ function x-commit-push-pull-request() {
   open "$GHURL/Xero/$repo/compare/Xero:$2...$GHME:$branch?expand=1"
 }
 
+# Opens up the pull request page with the correct dropdowns filled in based
+# off the specified repo and branches
 function x-pull-request() {
   if [ $# -eq 0 ]
   then
@@ -122,12 +127,15 @@ function x-pull-request() {
 
   if [ $# -eq 1 ]
   then
+    #Open up the pull requests for the given repo name
     open "$GHURL/Xero/$1/pulls"
     return
   fi
 
   if [ $# -eq 2 ]
   then
+    # Open up a new pull request for the working directory's repo merging to and from the given
+    # branch names
     local project=`git rev-parse --show-toplevel`
     local repo=`basename "$project"`
 
@@ -137,11 +145,14 @@ function x-pull-request() {
 
   if [ $# -eq 3 ]
   then
+    #Open up a new pull request for the given repo name merging to and from the given
+    # branch names
     open "$GHURL/Xero/$1/compare/Xero:$2...$GHME:$3?expand=1"
     return
   fi
 }
 
+# Opens up the Xero github page for the repo in the directory you are in
 function x-open() {
   local project=`git rev-parse --show-toplevel`
   local repo=`basename "$project"`
@@ -149,6 +160,7 @@ function x-open() {
   open "$GHURL/Xero/$repo"
 }
 
+#Removes a branch (both locally and on origin)
 function x-delete-branch() {
     if [ $# -eq 0 ]
       then
@@ -162,10 +174,12 @@ function x-delete-branch() {
 
 ## END XERO GITHUB ##
 
+## XERO GITHUB HELP##
 function x-help() {
 
   if [ $# -eq 0 ]
     then
+      # Show overview help
       echo ""
       echo -e "${orange}USAGE${nc}"
       echo -e "\t${red}x ${green}[command]${nc}"
@@ -180,7 +194,7 @@ function x-help() {
       echo -e "\t${green}n${nc}\tStashes any changes you have made to the current branch and creates a new"
       echo -e "\t\ttbranch off of the branch specified in the arguments"
       echo -e "\t${green}p${nc}\tOpens up the pull request page with the correct dropdowns filled in based"
-      echo -e "\t\toff the specified repo and branhes"
+      echo -e "\t\toff the specified repo and branches"
       echo -e "\t${green}pr${nc}\tAlias for [-p]"
       echo -e "\t${green}cp${nc}\tCommits the current code with the supplied message and pushes the changes"
       echo -e "\t\tto origin"
@@ -196,6 +210,7 @@ function x-help() {
 
   if [ $# -eq 1 ]
     then
+      # Show individual function call help
       case "$1" in
         o)	echo ""
             echo -e "${orange}USAGE${nx}"
@@ -294,13 +309,15 @@ function x-help() {
             echo -e "\t${red}x ${cyan}rm ${green}branchName${nc}"
             echo ""
             ;;
+        *)  echo ""
+            echo -e "The command '${cyan}$1${nc}' is not a Xero Github command."
+            echo ""
+            echo -e "Type ${red}x --help ${green}[command]${nc} for the avaliable commands"
+            echo ""
       esac
     return
   fi
 }
-
-
-## XERO GITHUB HELP##
 
 ## END XERO GITHUB HELP ##
 
@@ -327,14 +344,33 @@ function t() {
     return
   fi
 
-  open "https://teamcity.dev.xero.com/project.html?projectId=$1&tab=projectOverview"
+  if [ $# -eq 1 ]
+  then
+    case "$1" in
+      --help) t-help
+        ;;
+      *)  open "https://teamcity.dev.xero.com/project.html?projectId=$1&tab=projectOverview"
+        ;;
+    esac
+    return
+  fi
 }
 
 ## END XERO TEAMCITY ##
 
 ## XERO TEAMCITY HELP##
 
-  #TODO
+function t-help() {
+  echo ""
+  echo -e "${orange}Common TeamCity projects:${nc}"
+  echo ""
+  echo -e "\t${green}content${nc}\t\tThe Xero Content project"
+  echo -e "\t${green}header${nc}\t\tThe common header"
+  echo -e "\t${green}xerocore${nc}\tXero Business"
+  echo -e "\t${green}myxero${nc}\t\tMyXero"
+  echo -e "\t${green}reporting${nc}\tThe Xero reporting framework"
+  echo ""
+}
 
 ## END XERO TEAMCITY HELP ##
 
