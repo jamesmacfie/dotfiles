@@ -18,6 +18,7 @@
 # VARIABLES
 GHURL=`git config xero.url`
 GHME=`git config xero.username`
+GUSN='root'
 green='\x1B[0;32m' 	#Green text
 red='\x1B[1;31m'		#Light red text
 cyan='\x1B[0;36m'	#Cyan text
@@ -43,6 +44,8 @@ function x() {
     p) x-pull-request "${@:2}"
         ;;
     pr) x-pull-request "${@:2}"
+        ;;
+    pl) x-pull-latest
         ;;
     cp) x-commit-push "${@:2}"
         ;;
@@ -152,6 +155,13 @@ function x-pull-request() {
   fi
 }
 
+#Pulls the latest from your upstream for the current repo and branch
+function x-pull-latest() {
+  local branch=`git name-rev --name-only HEAD`
+  
+  git pull $GUSN $branch
+}
+
 # Opens up the Xero github page for the repo in the directory you are in
 function x-open() {
   local project=`git rev-parse --show-toplevel`
@@ -196,6 +206,7 @@ function x-help() {
       echo -e "\t${green}p${nc}\tOpens up the pull request page with the correct dropdowns filled in based"
       echo -e "\t\toff the specified repo and branches"
       echo -e "\t${green}pr${nc}\tAlias for [-p]"
+      echo -e "\t${green}pl${nc}\tPulls the latest from the current branch on your root/upstream"
       echo -e "\t${green}cp${nc}\tCommits the current code with the supplied message and pushes the changes"
       echo -e "\t\tto origin"
       echo -e "\t${green}y${nc}\tCommits the current code with the supplied message, pushes the changes to"
@@ -269,6 +280,16 @@ function x-help() {
             ;;
         pr) echo ""
             echo "Alias for ${cyan}p${nc}"
+            echo ""
+            ;;
+        pl) echo ""
+            echo -e "${orange}USAGE${nc}"
+            echo -e "\t${red}x ${cyan}pl${nc}"
+            echo ""
+            echo "Pulls the latest code from your root/upstream."
+            echo ""
+            echo -e "Requires the variable ${orange}GUSN${nc} to be set in the ${orange}.xero${nc} file."
+            echo "This variable is the name of your upstram branch"
             echo ""
             ;;
         cp) echo ""
