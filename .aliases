@@ -1,3 +1,5 @@
+alias src="cd ~/Source"
+
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."
