@@ -1,3 +1,11 @@
+#Take notes
+function n() {
+				$EDITOR ~/Dropbox/Notes/"$*".txt
+}
+function nls() {
+				ls -c ~/Dropbox/Notes/ | grep "$*"
+}
+
 # Simple calculator
 function calc() {
 	local result="";

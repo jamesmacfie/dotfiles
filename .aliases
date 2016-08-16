@@ -1,4 +1,12 @@
+# My sites (work)
 alias src="cd ~/Source"
+alias sites="cd ~/sites"
+
+alias hosts="sudo vim /private/etc/hosts"
+alias vhosts="sudo vim /Applications/MAMP/conf/apache/extra/httpd-vhosts.conf"
+alias apache_restart="sudo apachectl restart"
+alias reload_profile='. ~/.profile'
+alias php_log="sudo vim /Applications/MAMP/logs/php_error.log"
 
 # NPM
 alias nb="npm run build"
@@ -26,6 +34,7 @@ alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
 alias p="cd ~/projects"
 alias g="git"
+alias gr="grunt"
 alias h="history"
 alias j="jobs"
 
@@ -58,6 +67,9 @@ alias egrep='egrep --color=auto'
 
 # Enable aliases to be sudo’ed
 alias sudo='sudo '
+
+# Gzip-enabled `curl`
+alias gurl='curl --compressed'
 
 # Get week number
 alias week='date +%V'
@@ -102,6 +114,9 @@ alias c="tr -d '\n' | pbcopy"
 
 # Recursively delete `.DS_Store` files
 alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
+
+# ROT13-encode text. Works for decoding, too! ;)
+alias rot13='tr a-zA-Z n-za-mN-ZA-M'
 
 # Empty the Trash on all mounted volumes and the main HDD.
 # Also, clear Apple’s System Logs to improve shell startup speed.

@@ -170,7 +170,15 @@
 	insteadOf = "gst:"
 	pushInsteadOf = "gist:"
 	pushInsteadOf = "git://gist.github.com/"
-
 [url "git://gist.github.com/"]
-
 	insteadOf = "gist:"
+
+[push]
+	default = matching
+[user]
+	email = james@macfie.co.nz
+	name = James Macfie
+
+[xero]
+	url = "https://github.dev.xero.com"
+	username = "dev-jamesm"
