@@ -18,9 +18,6 @@ alias nu="npm run update"
 alias bi="bower install"
 alias bu="bower update"
 
-# Refresh Xero React builds
-alias rrb="rm -rf bower_components/ && rm -rf node_modules/ && npm install && npm run build"
-
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."
