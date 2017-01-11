@@ -5,6 +5,10 @@ export PATH="$HOME/bin:$PATH";
 
 export PATH=${PATH}:/Development/android-sdk-macosx/platform-tools:/Development/android-sdk-macosx/tools
 
+# Add npm token
+TOKEN=$(eval head -1 ~/.npmrc);
+export NPM_TOKEN=${TOKEN:33};
+
 # Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
 # * ~/.extra can be used for other settings you don’t want to commit.
