@@ -13,6 +13,9 @@ alias php_log="sudo vim /Applications/MAMP/logs/php_error.log"
 alias nb="npm run build"
 alias ni="npm install"
 alias nu="npm run update"
+alias nt="npm test"
+alias nd="npm run dev"
+alias ns="npm start"
 
 # Bower
 alias bi="bower install"
