@@ -17,6 +17,10 @@ alias nt="npm test"
 alias nd="npm run dev"
 alias ns="npm start"
 
+# Yarn
+alias yi="yarn install"
+alias ys="yarn start"
+
 # Bower
 alias bi="bower install"
 alias bu="bower update"
