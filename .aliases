@@ -20,6 +20,8 @@ alias ns="npm start"
 # Yarn
 alias yi="yarn install"
 alias ys="yarn start"
+alias yt="yarn test"
+alias yb="yarn build"
 
 # Bower
 alias bi="bower install"
