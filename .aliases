@@ -182,3 +182,7 @@ alias reload="exec ${SHELL} -l"
 
 # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'
+
+# Stop and start local postgres
+alias pgup="pg_ctl -D /usr/local/var/postgres start"
+alias pgdown="pg_ctl -D /usr/local/var/postgres stop"
