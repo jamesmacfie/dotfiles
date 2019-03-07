@@ -22,6 +22,7 @@ alias yi="yarn install"
 alias ys="yarn start"
 alias yt="yarn test"
 alias yb="yarn build"
+alias yd="yarn dev"
 
 # Bower
 alias bi="bower install"
