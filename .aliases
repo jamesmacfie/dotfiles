@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 alias src="cd ~/Source"
-alias sites="cd ~/sites"
+alias slv="cd ~/Source/solve/solvedata"
 
 alias hosts="sudo vim /private/etc/hosts"
 alias vhosts="sudo vim /Applications/MAMP/conf/apache/extra/httpd-vhosts.conf"

@@ -72,3 +72,13 @@ export MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+function qp() {
+    read -r -p "Are you sure? [y/n] " response
+    if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]
+    then
+        git add -A && git commit -m "$1" && git push
+    else
+        echo "Abort push"
+    fi
+}
