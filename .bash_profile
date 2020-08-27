@@ -1,11 +1,14 @@
 # Add `~/bin` to the `$PATH`
 export PATH="$HOME/bin:$PATH";
-
 export PATH=${PATH}:/Development/android-sdk-macosx/platform-tools:/Development/android-sdk-macosx/tools
+export PATH=${PATH}:/Users/james/Library/Python/3.7/bin
 
-# Add npm token
-TOKEN=$(eval head -1 ~/.npmrc);
-export NPM_TOKEN=${TOKEN:33};
+# Go
+export GOPATH=$(go env GOPATH)
+
+# # Add npm token
+# TOKEN=$(eval head -1 ~/.npmrc);
+# export NPM_TOKEN=${TOKEN:33};
 
 # Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
@@ -82,3 +85,9 @@ function qp() {
         echo "Abort push"
     fi
 }
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/james/google-cloud-sdk/path.bash.inc' ]; then . '/Users/james/google-cloud-sdk/path.bash.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/james/google-cloud-sdk/completion.bash.inc' ]; then . '/Users/james/google-cloud-sdk/completion.bash.inc'; fi

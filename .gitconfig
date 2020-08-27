@@ -12,8 +12,11 @@
 	# `git di $number` shows the diff between the state `$number` revisions ago and the current state
 	di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
 
-	# Pull in remote changes for the current repository and all its submodules
-	p = !"git pull; git submodule foreach git pull origin master"
+  # Fetch all
+	f = !"git fetch --all"
+
+	# Push
+	p = !"git push"
 
 	# Clone a repository including all submodules
 	c = clone --recursive
@@ -78,6 +81,8 @@
 			git commit --amend -m \"$(git log -1 --pretty=%B)\n\nCloses #$1.\"; \
 		fi \
 	}; f"
+
+	lb = !git reflog show --pretty=format:'%gs ~ %gd' --date=relative | grep 'checkout:' | grep -oE '[^ ]+ ~ .*' | awk -F~ '!seen[$1]++' | head -n 10 | awk -F' ~ HEAD@{' '{printf(\"  \\033[33m%s: \\033[37m %s\\033[0m\\n\", substr($2, 1, length($2)-1), $1)}'
 
 [apply]
 
@@ -160,7 +165,7 @@
 [push]
 
 	# https://git-scm.com/docs/git-config#git-config-pushdefault
-	default = simple
+	default = current
 	# Make `git push` push relevant annotated tags when pushing branches out.
 	followTags = true
 
@@ -184,8 +189,6 @@
 [url "git://gist.github.com/"]
 	insteadOf = "gist:"
 
-[push]
-	default = matching
 [user]
 	email = james@macfie.co.nz
 	name = James Macfie
